@@ -1,0 +1,10 @@
+https://www.coursera.org/learn/diving-in-python/supplement/tDmYA/polieznyie-ssylki
+https://en.wikipedia.org/wiki/Hash_table
+
+functions https://docs.python.org/3/tutorial/controlflow.html#defining-functions
+work_with_files https://docs.python.org/3/tutorial/inputoutput.html#reading-and-writing-files
+built_in_functions https://docs.python.org/3/library/functions.html 
+sorting_how_to https://docs.python.org/3/howto/sorting.html
+functional_programming_how_to https://docs.python.org/3/howto/functional.html
+functools https://docs.python.org/3/library/functools.html
+decorators https://python-3-patterns-idioms-test.readthedocs.io/en/latest/PythonDecorators.html
