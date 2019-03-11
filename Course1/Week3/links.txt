@@ -1,0 +1,3 @@
+about classes - https://www.python-course.eu/python3_object_oriented_programming.php
+about class and instance attributes - https://www.python-course.eu/python3_class_and_instance_attributes.php
+about properties - https://www.python-course.eu/python3_properties.php
