@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
-<title>4.2.1.1 slides</title>
+<title>01_process_and_threads_export slides</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
@@ -36,7 +36,7 @@ if( window.location.search.match( /print-pdf/gi ) ) {
 
 <!-- Loading the mathjax macro -->
 <!-- Load mathjax -->
-    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
     <!-- MathJax configuration -->
     <script type="text/x-mathjax-config">
     MathJax.Hub.Config({
@@ -58,7 +58,7 @@ if( window.location.search.match( /print-pdf/gi ) ) {
     <!-- End of mathjax configuration -->
 
 <!-- Get Font-awesome from cdn -->
-<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.css">
 
 <style type="text/css">
     /*!
@@ -11770,9 +11770,6 @@ ul.typeahead-list > li > a {
 .ansi-bold { font-weight: bold; }
 
     </style>
-<style type="text/css">
-    
-    </style>
 
 
 <style type="text/css">
@@ -11857,52 +11854,708 @@ a.anchor-link {
 <div class="reveal">
 <div class="slides">
 <section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="&#1055;&#1088;&#1086;&#1094;&#1077;&#1089;&#1089;-&#1080;-&#1077;&#1075;&#1086;-&#1093;&#1072;&#1088;&#1072;&#1082;&#1090;&#1077;&#1088;&#1080;&#1089;&#1090;&#1080;&#1082;&#1080;">&#1055;&#1088;&#1086;&#1094;&#1077;&#1089;&#1089; &#1080; &#1077;&#1075;&#1086; &#1093;&#1072;&#1088;&#1072;&#1082;&#1090;&#1077;&#1088;&#1080;&#1089;&#1090;&#1080;&#1082;&#1080;<a class="anchor-link" href="#&#1055;&#1088;&#1086;&#1094;&#1077;&#1089;&#1089;-&#1080;-&#1077;&#1075;&#1086;-&#1093;&#1072;&#1088;&#1072;&#1082;&#1090;&#1077;&#1088;&#1080;&#1089;&#1090;&#1080;&#1082;&#1080;">&#182;</a></h3><ul>
+<li>Что такое процесс?</li>
+<li>Какие процессы запущены в ОС?</li>
+<li>Как запустить python процесс?</li>
+<li>Что делает процесс во время исполнения?</li>
+</ul>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Характеристики процесса:</p>
+<ul>
+<li>Идентификатор процесса, PID</li>
+<li>Объем оперативной памяти</li>
+<li>Стек</li>
+<li>Список открытых файлов</li>
+<li>Ввод/вывод</li>
+</ul>
+
+</div>
+</div>
+</div></section></section><section><section>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">ImportantValue</span><span class="p">:</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">amount</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">amount</span> <span class="o">=</span> <span class="n">amount</span>
-    
-    <span class="k">def</span> <span class="nf">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">amount</span>
-    
-    <span class="k">def</span> <span class="nf">__set__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;log.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
-            
-        <span class="bp">self</span><span class="o">.</span><span class="n">amount</span> <span class="o">=</span> <span class="n">value</span>
-    
-    
-<span class="k">class</span> <span class="nc">Account</span><span class="p">:</span>
-    <span class="n">amount</span> <span class="o">=</span> <span class="n">ImportantValue</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
-    
-<span class="n">bobs_account</span> <span class="o">=</span> <span class="n">Account</span><span class="p">()</span>
-<span class="n">bobs_account</span><span class="o">.</span><span class="n">amount</span> <span class="o">=</span> <span class="mi">200</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># простой Python процесс</span>
 
-<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;log.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="n">pid</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getpid</span><span class="p">()</span>
+
+<span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">pid</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">())</span>
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="o">&gt;</span> <span class="err">$</span> <span class="n">python</span> <span class="n">ex1</span><span class="o">.</span><span class="n">py</span>
+<span class="o">&gt;</span> <span class="mi">15468</span> <span class="mf">1488521934.518766</span>
+<span class="o">&gt;</span> <span class="mi">15468</span> <span class="mf">1488521936.520758</span>
+<span class="o">&gt;</span> <span class="mi">15468</span> <span class="mf">1488521938.522762</span>
+<span class="o">&gt;</span> <span class="o">...</span>
 </pre></div>
 
 </div>
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="&#1057;&#1086;&#1079;&#1076;&#1072;&#1085;&#1080;&#1077;-&#1087;&#1088;&#1086;&#1094;&#1077;&#1089;&#1089;&#1072;-&#1085;&#1072;-Python">&#1057;&#1086;&#1079;&#1076;&#1072;&#1085;&#1080;&#1077; &#1087;&#1088;&#1086;&#1094;&#1077;&#1089;&#1089;&#1072; &#1085;&#1072; Python<a class="anchor-link" href="#&#1057;&#1086;&#1079;&#1076;&#1072;&#1085;&#1080;&#1077;-&#1087;&#1088;&#1086;&#1094;&#1077;&#1089;&#1089;&#1072;-&#1085;&#1072;-Python">&#182;</a></h3><ul>
+<li>Как создать дочерний процесс?</li>
+<li>Как работает системный вызов fork?</li>
+<li>Модуль multiprocessing</li>
+</ul>
 
-
-<div class="output_area">
-<div class="prompt"></div>
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>200
-</pre>
 </div>
 </div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Создание процесса на Python</span>
 
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="n">pid</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">fork</span><span class="p">()</span>
+<span class="k">if</span> <span class="n">pid</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="c1"># дочерний процесс</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;child:&quot;</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">getpid</span><span class="p">())</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="c1"># родительский процесс</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;parent:&quot;</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">getpid</span><span class="p">())</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+
+<span class="o">&gt;</span> <span class="err">$</span> <span class="n">python</span> <span class="n">ex2</span><span class="o">.</span><span class="n">py</span>
+<span class="o">&gt;</span> <span class="n">parent</span><span class="p">:</span> <span class="mi">14689</span>
+<span class="o">&gt;</span> <span class="n">child</span><span class="p">:</span> <span class="mi">14690</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div></section></section><section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Память родительского и дочернего процесса</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="n">foo</span> <span class="o">=</span> <span class="s2">&quot;bar&quot;</span>
+
+<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">fork</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="c1"># дочерний процесс</span>
+    <span class="n">foo</span> <span class="o">=</span> <span class="s2">&quot;baz&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;child:&quot;</span><span class="p">,</span> <span class="n">foo</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="c1"># родительский процесс</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;parent:&quot;</span><span class="p">,</span> <span class="n">foo</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+
+<span class="o">&gt;</span> <span class="err">$</span> <span class="n">python</span> <span class="n">ex3</span><span class="o">.</span><span class="n">py</span>
+<span class="o">&gt;</span> <span class="n">parent</span><span class="p">:</span> <span class="n">bar</span>
+<span class="o">&gt;</span> <span class="n">child</span><span class="p">:</span> <span class="n">baz</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div></section></section><section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Файлы в родительском и дочернем процессе</span>
+
+<span class="c1"># $ cat data.txt</span>
+<span class="c1"># example string1</span>
+<span class="c1"># example string2</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;data.txt&quot;</span><span class="p">)</span>
+<span class="n">foo</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">fork</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="c1"># дочерний процесс</span>
+    <span class="n">foo</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;child:&quot;</span><span class="p">,</span> <span class="n">foo</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="c1"># родительский процесс</span>
+    <span class="n">foo</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;parent:&quot;</span><span class="p">,</span> <span class="n">foo</span><span class="p">)</span>
+
+<span class="o">&gt;</span> <span class="err">$</span> <span class="n">python</span> <span class="n">ex4</span><span class="o">.</span><span class="n">py</span>
+<span class="o">&gt;</span> <span class="n">parent</span><span class="p">:</span> <span class="n">example</span> <span class="n">string2</span>
+<span class="o">&gt;</span> <span class="n">child</span><span class="p">:</span> <span class="n">example</span> <span class="n">string2</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div></section></section><section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Создание процесса, модуль multiprocessing</span>
+
+<span class="kn">from</span> <span class="nn">multiprocessing</span> <span class="k">import</span> <span class="n">Process</span>
+
+<span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;hello&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+
+<span class="n">p</span> <span class="o">=</span> <span class="n">Process</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">f</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;Bob&quot;</span><span class="p">,))</span>
+<span class="n">p</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="n">p</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+
+<span class="o">&gt;</span> <span class="err">$</span> <span class="n">python</span> <span class="n">ex5</span><span class="o">.</span><span class="n">py</span>
+<span class="o">&gt;</span> <span class="n">hello</span> <span class="n">Bob</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div></section></section><section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Создание процесса, модуль multiprocessing</span>
+
+<span class="kn">from</span> <span class="nn">multiprocessing</span> <span class="k">import</span> <span class="n">Process</span>
+
+<span class="k">class</span> <span class="nc">PrintProcess</span><span class="p">(</span><span class="n">Process</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;hello&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+<span class="n">p</span> <span class="o">=</span> <span class="n">PrintProcess</span><span class="p">(</span><span class="s2">&quot;Mike&quot;</span><span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="n">p</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+
+<span class="o">&gt;</span> <span class="err">$</span> <span class="n">python</span> <span class="n">ex6</span><span class="o">.</span><span class="n">py</span>
+<span class="o">&gt;</span> <span class="n">hello</span> <span class="n">Mike</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="&#1057;&#1086;&#1079;&#1076;&#1072;&#1085;&#1080;&#1077;-&#1087;&#1086;&#1090;&#1086;&#1082;&#1086;&#1074;">&#1057;&#1086;&#1079;&#1076;&#1072;&#1085;&#1080;&#1077; &#1087;&#1086;&#1090;&#1086;&#1082;&#1086;&#1074;<a class="anchor-link" href="#&#1057;&#1086;&#1079;&#1076;&#1072;&#1085;&#1080;&#1077;-&#1087;&#1086;&#1090;&#1086;&#1082;&#1086;&#1074;">&#182;</a></h3><ul>
+<li>Что такое поток</li>
+<li>Создание потоков, модуль threading</li>
+<li>Использование ThreadPoolExecutor</li>
+</ul>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="&#1057;&#1086;&#1079;&#1076;&#1072;&#1085;&#1080;&#1077;-&#1087;&#1086;&#1090;&#1086;&#1082;&#1086;&#1074;">&#1057;&#1086;&#1079;&#1076;&#1072;&#1085;&#1080;&#1077; &#1087;&#1086;&#1090;&#1086;&#1082;&#1086;&#1074;<a class="anchor-link" href="#&#1057;&#1086;&#1079;&#1076;&#1072;&#1085;&#1080;&#1077;-&#1087;&#1086;&#1090;&#1086;&#1082;&#1086;&#1074;">&#182;</a></h3><ul>
+<li>Поток напоминает процесс</li>
+<li>У потока своя последовательность инструкций</li>
+<li>Каждый поток имеет собственный стек</li>
+<li>Все потоки выполняются в рамках процесса</li>
+<li>Потоки разделяют память и ресурсы процесса</li>
+<li>Управлением выполнением потоков занимается ОС</li>
+<li>Потоки в Python имеют свои ограничения</li>
+</ul>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Создание потока</span>
+
+<span class="kn">from</span> <span class="nn">threading</span> <span class="k">import</span> <span class="n">Thread</span>
+
+<span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;hello&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+
+<span class="n">th</span> <span class="o">=</span> <span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">f</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;Bob&quot;</span><span class="p">,))</span>
+<span class="n">th</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="n">th</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+
+<span class="o">&gt;</span> <span class="err">$</span> <span class="n">python</span> <span class="n">ex1</span><span class="o">.</span><span class="n">py</span>
+<span class="o">&gt;</span> <span class="n">hello</span> <span class="n">Bob</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div></section></section><section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Создание потока</span>
+
+<span class="kn">from</span> <span class="nn">threading</span> <span class="k">import</span> <span class="n">Thread</span>
+
+<span class="k">class</span> <span class="nc">PrintThread</span><span class="p">(</span><span class="n">Thread</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;hello&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+<span class="n">th</span> <span class="o">=</span> <span class="n">PrintThread</span><span class="p">(</span><span class="s2">&quot;Mike&quot;</span><span class="p">)</span>
+<span class="n">th</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="n">th</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+
+<span class="o">&gt;</span> <span class="err">$</span> <span class="n">python</span> <span class="n">ex2</span><span class="o">.</span><span class="n">py</span>
+<span class="o">&gt;</span> <span class="n">hello</span> <span class="n">Mike</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div></section></section><section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Пул потоков, concurrent.futures.Future</span>
+
+<span class="kn">from</span> <span class="nn">concurrent.futures</span> <span class="k">import</span> <span class="n">ThreadPoolExecutor</span><span class="p">,</span> <span class="n">as_completed</span>
+
+<span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">a</span> <span class="o">*</span> <span class="n">a</span>
+
+<span class="c1"># .shutdown() in exit</span>
+<span class="k">with</span> <span class="n">ThreadPoolExecutor</span><span class="p">(</span><span class="n">max_workers</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span> <span class="k">as</span> <span class="n">pool</span><span class="p">:</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[</span><span class="n">pool</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)]</span>
+
+    <span class="k">for</span> <span class="n">future</span> <span class="ow">in</span> <span class="n">as_completed</span><span class="p">(</span><span class="n">results</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">future</span><span class="o">.</span><span class="n">result</span><span class="p">())</span>
+
+<span class="err">$</span> <span class="n">python</span> <span class="n">ex3</span><span class="o">.</span><span class="n">py</span>
+<span class="mi">0</span>
+<span class="mi">1</span>
+<span class="mi">4</span>
+<span class="mi">9</span>
+<span class="o">...</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="&#1057;&#1080;&#1085;&#1093;&#1088;&#1086;&#1085;&#1080;&#1079;&#1072;&#1094;&#1080;&#1103;-&#1087;&#1086;&#1090;&#1086;&#1082;&#1086;&#1074;">&#1057;&#1080;&#1085;&#1093;&#1088;&#1086;&#1085;&#1080;&#1079;&#1072;&#1094;&#1080;&#1103; &#1087;&#1086;&#1090;&#1086;&#1082;&#1086;&#1074;<a class="anchor-link" href="#&#1057;&#1080;&#1085;&#1093;&#1088;&#1086;&#1085;&#1080;&#1079;&#1072;&#1094;&#1080;&#1103;-&#1087;&#1086;&#1090;&#1086;&#1082;&#1086;&#1074;">&#182;</a></h3><ul>
+<li>Очереди</li>
+<li>Блокировки</li>
+<li>Условные переменные</li>
+</ul>
+
+</div>
+</div>
+</div><aside class="notes">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">В</span> <span class="n">многопоточной</span> <span class="n">программе</span> <span class="n">доступ</span> <span class="n">к</span> <span class="n">объектам</span> <span class="n">иногда</span> <span class="n">нужно</span> <span class="n">синхронизировать</span><span class="o">.</span>
+<span class="n">Часто</span> <span class="n">для</span> <span class="n">синхронизации</span> <span class="n">потоков</span> <span class="n">используют</span> <span class="n">блокировки</span><span class="o">.</span>
+<span class="n">Любые</span> <span class="n">блокировки</span> <span class="n">замедляют</span> <span class="n">выполнение</span> <span class="n">программы</span><span class="o">.</span>
+
+<span class="n">Лучше</span> <span class="n">избегать</span> <span class="n">использование</span> <span class="n">блокировок</span> 
+<span class="n">и</span> <span class="n">отдавать</span> <span class="n">предпочтение</span> <span class="n">обмену</span> <span class="n">данными</span> <span class="n">через</span> <span class="n">очереди</span><span class="o">.</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+</aside></section></section><section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Очереди, модуль queue</span>
+<span class="kn">from</span> <span class="nn">queue</span> <span class="k">import</span> <span class="n">Queue</span>
+<span class="kn">from</span> <span class="nn">threading</span> <span class="k">import</span> <span class="n">Thread</span>
+
+<span class="k">def</span> <span class="nf">worker</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">item</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;process data:&quot;</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+
+<span class="n">q</span> <span class="o">=</span> <span class="n">Queue</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">th1</span> <span class="o">=</span> <span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">worker</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">th2</span> <span class="o">=</span> <span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">worker</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">th1</span><span class="o">.</span><span class="n">start</span><span class="p">();</span> <span class="n">th2</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">50</span><span class="p">):</span>
+    <span class="n">q</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+<span class="n">q</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="kc">None</span><span class="p">);</span> <span class="n">q</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+<span class="n">th1</span><span class="o">.</span><span class="n">join</span><span class="p">();</span> <span class="n">th2</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+
+<span class="o">&gt;</span> <span class="err">$</span> <span class="n">python</span> <span class="n">ex_queue</span><span class="o">.</span><span class="n">py</span>
+<span class="o">&gt;</span> <span class="n">process</span> <span class="n">data</span><span class="p">:</span> <span class="mi">1</span> <span class="mi">0</span>
+<span class="o">&gt;</span> <span class="n">process</span> <span class="n">data</span><span class="p">:</span> <span class="mi">1</span> <span class="mi">1</span>
+<span class="o">&gt;</span> <span class="n">process</span> <span class="n">data</span><span class="p">:</span> <span class="mi">2</span> <span class="mi">3</span>
+<span class="o">...</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div><aside class="notes">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Использование</span> <span class="n">очередей</span> <span class="n">для</span> <span class="n">потоков</span> <span class="n">выглядит</span> <span class="n">как</span> <span class="n">показано</span> <span class="n">на</span> <span class="n">слайде</span><span class="o">.</span>
+<span class="n">Создаем</span> <span class="n">очередь</span> <span class="n">с</span> <span class="n">максимальным</span> <span class="n">размером</span> <span class="mf">5.</span>
+<span class="n">Используем</span> <span class="n">методы</span> <span class="n">put</span><span class="p">()</span> <span class="n">для</span> <span class="n">того</span> <span class="n">чтобы</span> <span class="n">поместить</span> <span class="n">данные</span> <span class="n">в</span> <span class="n">очередь</span>
+<span class="n">и</span> <span class="n">get</span><span class="p">()</span> <span class="n">для</span> <span class="n">того</span> <span class="n">чтобы</span> <span class="n">забрать</span> <span class="n">данные</span> <span class="n">из</span> <span class="n">очереди</span>
+
+<span class="n">Использование</span> <span class="n">очередей</span> <span class="n">делает</span> <span class="n">код</span> <span class="n">выполняемой</span> <span class="n">программы</span> <span class="n">более</span> <span class="n">простым</span><span class="o">.</span>
+<span class="n">И</span> <span class="n">по</span> <span class="n">возможности</span> <span class="n">лучше</span> <span class="n">разрабатывать</span> <span class="n">код</span> <span class="n">таким</span> <span class="n">образом</span><span class="p">,</span>
+<span class="n">чтобы</span> <span class="n">не</span> <span class="n">было</span> <span class="n">глобального</span> <span class="n">разделяемого</span> <span class="n">ресурса</span><span class="p">,</span> <span class="n">или</span> <span class="n">состояния</span><span class="o">.</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+</aside></section></section><section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Синхронизация потоков, race condition</span>
+
+<span class="kn">import</span> <span class="nn">threading</span>
+
+<span class="k">class</span> <span class="nc">Point</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span>
+
+<span class="c1"># use in threads</span>
+<span class="n">my_point</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+<span class="n">my_point</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">my_point</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div></section></section><section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Синхронизация потоков, блокировки</span>
+
+<span class="kn">import</span> <span class="nn">threading</span>
+
+<span class="k">class</span> <span class="nc">Point</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mutex</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">RLock</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">mutex</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">mutex</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span>
+
+<span class="c1"># use in threads</span>
+<span class="n">my_point</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+<span class="n">my_point</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">my_point</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div><aside class="notes">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Этот</span> <span class="n">код</span> <span class="n">гарантирует</span> <span class="n">что</span> <span class="n">если</span> <span class="n">объект</span> <span class="n">класса</span> <span class="n">Point</span> <span class="n">будет</span> <span class="n">использоваться</span> <span class="n">в</span> <span class="n">разных</span> <span class="n">потоках</span><span class="p">,</span>
+<span class="n">то</span> <span class="n">изменение</span> <span class="n">x</span> <span class="n">и</span> <span class="n">y</span> <span class="n">будет</span> <span class="n">всегда</span> <span class="n">атомарным</span><span class="o">.</span>
+
+<span class="n">Работает</span> <span class="n">все</span> <span class="n">это</span> <span class="n">так</span><span class="p">:</span> <span class="o">-</span> <span class="n">при</span> <span class="n">вызове</span> <span class="n">метода</span> <span class="n">берем</span> <span class="n">блокировку</span> <span class="n">через</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mutex</span>
+<span class="n">Весь</span> <span class="n">код</span> <span class="n">внутри</span> <span class="k">with</span> <span class="n">блока</span> <span class="n">будет</span> <span class="n">выполнятся</span> <span class="n">только</span> <span class="n">в</span> <span class="n">одном</span> <span class="n">потоке</span><span class="o">.</span>
+
+<span class="n">Другими</span> <span class="n">словами</span><span class="p">,</span> <span class="n">если</span> <span class="n">два</span> <span class="n">разных</span> <span class="n">потока</span> <span class="n">вызовут</span> <span class="o">.</span><span class="n">get</span> <span class="n">то</span> <span class="n">пока</span> <span class="n">первый</span> <span class="n">поток</span> <span class="n">не</span> <span class="n">выйдет</span> <span class="n">из</span> <span class="n">блока</span> 
+<span class="n">второй</span> <span class="n">будет</span> <span class="n">его</span> <span class="n">ждать</span> <span class="o">-</span> <span class="n">и</span> <span class="n">только</span> <span class="n">потом</span> <span class="n">продолжит</span> <span class="n">выполнение</span><span class="o">.</span>
+
+<span class="n">Зачем</span> <span class="n">это</span> <span class="n">все</span> <span class="n">нужно</span><span class="err">?</span> <span class="n">Координаты</span> <span class="n">нужно</span> <span class="n">менять</span> <span class="n">одновременно</span> <span class="o">-</span> <span class="n">ведь</span> <span class="n">точка</span> <span class="n">это</span> <span class="n">атомарный</span> <span class="n">объект</span><span class="o">.</span>
+<span class="n">Если</span> <span class="n">позволить</span> <span class="n">одному</span> <span class="n">потоку</span> <span class="n">поменять</span> <span class="n">x</span><span class="p">,</span> <span class="n">а</span> <span class="n">другой</span> <span class="n">в</span> <span class="n">это</span> <span class="n">же</span> <span class="n">время</span> <span class="n">поправит</span> <span class="n">y</span>
+<span class="n">логика</span> <span class="n">алгоритма</span> <span class="n">может</span> <span class="n">сломаться</span><span class="o">.</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+</aside></section></section><section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Синхронизация потоков, блокировки</span>
+
+<span class="kn">import</span> <span class="nn">threading</span>
+
+
+<span class="n">a</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">RLock</span><span class="p">()</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">RLock</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">foo</span><span class="p">():</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">a</span><span class="o">.</span><span class="n">acquire</span><span class="p">()</span>
+        <span class="n">b</span><span class="o">.</span><span class="n">acquire</span><span class="p">()</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">a</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
+        <span class="n">b</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div></section></section><section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Синхронизация потоков, условные переменные</span>
+
+<span class="k">class</span> <span class="nc">Queue</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_size</span> <span class="o">=</span> <span class="n">size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_queue</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mutex</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">RLock</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_empty</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Condition</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_mutex</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_full</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Condition</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_mutex</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">put</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_full</span><span class="p">:</span>
+            <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_queue</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_size</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_full</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+            
+            <span class="bp">self</span><span class="o">.</span><span class="n">_queue</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_empty</span><span class="o">.</span><span class="n">notify</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_empty</span><span class="p">:</span>
+            <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_queue</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_empty</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+            
+            <span class="n">ret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_queue</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_full</span><span class="o">.</span><span class="n">notify</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">ret</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div><aside class="notes">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Все</span> <span class="n">механизмы</span> <span class="n">блокировки</span> <span class="n">и</span> <span class="n">обмена</span> <span class="n">данными</span> <span class="n">между</span> <span class="n">потоками</span> 
+<span class="n">имеют</span> <span class="n">место</span> <span class="n">и</span> <span class="n">для</span> <span class="n">процессов</span><span class="o">.</span>
+<span class="n">Но</span> <span class="n">вместо</span> <span class="n">модуля</span> <span class="n">threading</span> <span class="n">нужно</span> <span class="n">использовать</span> <span class="n">multiprocessing</span><span class="o">.</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+</aside></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="&#1043;&#1083;&#1086;&#1073;&#1072;&#1083;&#1100;&#1085;&#1072;&#1103;-&#1073;&#1083;&#1086;&#1082;&#1080;&#1088;&#1086;&#1074;&#1082;&#1072;-&#1080;&#1085;&#1090;&#1077;&#1088;&#1087;&#1088;&#1077;&#1090;&#1072;&#1090;&#1086;&#1088;&#1072;,-GIL">&#1043;&#1083;&#1086;&#1073;&#1072;&#1083;&#1100;&#1085;&#1072;&#1103; &#1073;&#1083;&#1086;&#1082;&#1080;&#1088;&#1086;&#1074;&#1082;&#1072; &#1080;&#1085;&#1090;&#1077;&#1088;&#1087;&#1088;&#1077;&#1090;&#1072;&#1090;&#1086;&#1088;&#1072;, GIL<a class="anchor-link" href="#&#1043;&#1083;&#1086;&#1073;&#1072;&#1083;&#1100;&#1085;&#1072;&#1103;-&#1073;&#1083;&#1086;&#1082;&#1080;&#1088;&#1086;&#1074;&#1082;&#1072;-&#1080;&#1085;&#1090;&#1077;&#1088;&#1087;&#1088;&#1077;&#1090;&#1072;&#1090;&#1086;&#1088;&#1072;,-GIL">&#182;</a></h3><ul>
+<li>Что такое Global Interpreter Lock?</li>
+<li>Зачем нужен GIL?</li>
+<li>GIL и системные вызовы</li>
+</ul>
+
+</div>
+</div>
+</div><aside class="notes">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">GIL</span> <span class="n">это</span> <span class="n">достаточно</span> <span class="n">сложная</span> <span class="n">тема</span> <span class="n">в</span> <span class="n">Python</span><span class="o">.</span>
+<span class="n">Для</span> <span class="n">более</span> <span class="n">глубокого</span> <span class="n">понимания</span> <span class="n">того</span> <span class="n">как</span> <span class="n">работают</span> <span class="n">потоки</span>
+<span class="n">нужно</span> <span class="n">иметь</span> <span class="n">общее</span> <span class="n">представление</span> <span class="n">зачем</span> <span class="n">нужен</span> <span class="n">GIL</span> <span class="n">и</span> <span class="n">как</span> <span class="n">он</span> <span class="n">устроен</span><span class="o">.</span>
+
+<span class="n">GIL</span> <span class="n">защищает</span> <span class="n">память</span> <span class="n">интерпретатора</span> <span class="n">от</span> <span class="n">повреждений</span> <span class="n">и</span> <span class="n">делает</span> <span class="n">операции</span> <span class="n">атомарными</span><span class="o">.</span>
+
+<span class="n">Поток</span><span class="p">,</span> <span class="n">владеющий</span> <span class="n">GIL</span><span class="p">,</span> <span class="n">не</span> <span class="n">отдает</span> <span class="n">его</span> <span class="n">пока</span> <span class="n">об</span> <span class="n">этом</span> <span class="n">не</span> <span class="n">попросят</span><span class="o">.</span>
+<span class="n">Потоки</span> <span class="n">засыпают</span> <span class="n">на</span> <span class="mi">5</span> <span class="n">мс</span><span class="o">.</span> <span class="n">для</span> <span class="n">ожидания</span> <span class="n">GIL</span><span class="o">.</span>
+<span class="n">Сам</span> <span class="n">GIL</span> <span class="n">устроен</span> <span class="n">как</span> <span class="n">обычная</span> <span class="n">нерекурсивная</span> <span class="n">блокировка</span><span class="o">.</span> <span class="n">Эта</span> <span class="n">же</span> <span class="n">структура</span> <span class="n">лежит</span> <span class="n">в</span> <span class="n">основе</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="o">.</span> 
+
+<span class="n">Когда</span> <span class="n">Python</span> <span class="n">делает</span> <span class="n">системный</span> <span class="n">вызов</span> <span class="n">или</span> <span class="n">вызов</span> <span class="n">из</span> <span class="n">внешней</span> <span class="n">библиотеки</span> <span class="n">он</span> <span class="n">отключает</span> <span class="n">механизм</span> <span class="n">GIL</span><span class="o">.</span>
+<span class="n">После</span> <span class="n">того</span> <span class="n">как</span> <span class="n">функция</span> <span class="n">вернет</span> <span class="n">управление</span> <span class="n">снова</span> <span class="n">включает</span> <span class="n">его</span><span class="o">.</span>
+
+<span class="n">Т</span><span class="o">.</span><span class="n">е</span><span class="o">.</span> <span class="n">потоки</span> <span class="n">при</span> <span class="n">своем</span> <span class="n">выполнении</span> <span class="n">так</span> <span class="n">или</span> <span class="n">иначе</span> <span class="n">вынуждены</span> <span class="n">получать</span> <span class="n">GIL</span><span class="o">.</span>
+<span class="n">Именно</span> <span class="n">поэтому</span> <span class="n">многопоточные</span> <span class="n">программы</span><span class="p">,</span> <span class="n">требующие</span> <span class="n">больших</span> <span class="n">вычислений</span><span class="p">,</span>
+<span class="n">могут</span> <span class="n">выполняться</span> <span class="n">медленней</span> <span class="n">чем</span> <span class="n">однопоточные</span><span class="o">.</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+</aside></section></section><section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># cpu bound programm</span>
+
+<span class="kn">from</span> <span class="nn">threading</span> <span class="k">import</span> <span class="n">Thread</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="k">def</span> <span class="nf">count</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">while</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">n</span> <span class="o">-=</span> <span class="mi">1</span>
+
+<span class="c1"># series run</span>
+<span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">count</span><span class="p">(</span><span class="mi">100</span><span class="n">_000_000</span><span class="p">)</span>
+<span class="n">count</span><span class="p">(</span><span class="mi">100</span><span class="n">_000_000</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span><span class="p">)</span>
+
+<span class="c1"># parallel run</span>
+<span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">th1</span> <span class="o">=</span> <span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">count</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="mi">100</span><span class="n">_000_000</span><span class="p">,))</span>
+<span class="n">th2</span> <span class="o">=</span> <span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">count</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="mi">100</span><span class="n">_000_000</span><span class="p">,))</span>
+
+<span class="n">th1</span><span class="o">.</span><span class="n">start</span><span class="p">();</span> <span class="n">th2</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="n">th1</span><span class="o">.</span><span class="n">join</span><span class="p">();</span> <span class="n">th2</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div></section></section><section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># как выполняется поток?</span>
+
+<span class="n">a</span>      <span class="n">r</span>      <span class="n">a</span>            <span class="n">r</span>              <span class="n">a</span>          <span class="n">r</span>    <span class="n">a</span>
+  <span class="n">run</span>  <span class="o">|------|</span>    <span class="n">run</span>     <span class="o">|--------------|</span>   <span class="n">run</span>    <span class="o">|----|</span> <span class="n">run</span>
+<span class="o">------&gt;|</span>  <span class="n">IO</span>  <span class="o">|-----------&gt;|</span>      <span class="n">IO</span>      <span class="o">|---------&gt;|</span> <span class="n">IO</span> <span class="o">|-----&gt;</span>
+       <span class="o">|------|</span>            <span class="o">|--------------|</span>          <span class="o">|----|</span>
+<span class="n">a</span>      <span class="n">r</span>      <span class="n">a</span>            <span class="n">r</span>              <span class="n">a</span>          <span class="n">r</span>    <span class="n">a</span>
+
+<span class="n">a</span> <span class="o">-</span> <span class="n">acquire</span> <span class="n">GIL</span>
+<span class="n">r</span> <span class="o">-</span> <span class="n">release</span> <span class="n">GIL</span>
+</pre></div>
+
+</div>
 </div>
 </div>
 

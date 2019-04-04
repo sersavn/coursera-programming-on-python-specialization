@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
-<title>4.3.1 slides</title>
+<title>03_asyncio_programming_export slides</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
@@ -36,7 +36,7 @@ if( window.location.search.match( /print-pdf/gi ) ) {
 
 <!-- Loading the mathjax macro -->
 <!-- Load mathjax -->
-    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
     <!-- MathJax configuration -->
     <script type="text/x-mathjax-config">
     MathJax.Hub.Config({
@@ -58,7 +58,7 @@ if( window.location.search.match( /print-pdf/gi ) ) {
     <!-- End of mathjax configuration -->
 
 <!-- Get Font-awesome from cdn -->
-<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.css">
 
 <style type="text/css">
     /*!
@@ -11770,9 +11770,6 @@ ul.typeahead-list > li > a {
 .ansi-bold { font-weight: bold; }
 
     </style>
-<style type="text/css">
-    
-    </style>
 
 
 <style type="text/css">
@@ -11857,54 +11854,770 @@ a.anchor-link {
 <div class="reveal">
 <div class="slides">
 <section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="&#1054;&#1073;&#1088;&#1072;&#1073;&#1086;&#1090;&#1082;&#1072;-&#1079;&#1072;&#1087;&#1088;&#1086;&#1089;&#1086;&#1074;-&#1074;-&#1086;&#1076;&#1080;&#1085;-&#1087;&#1086;&#1090;&#1086;&#1082;">&#1054;&#1073;&#1088;&#1072;&#1073;&#1086;&#1090;&#1082;&#1072; &#1079;&#1072;&#1087;&#1088;&#1086;&#1089;&#1086;&#1074; &#1074; &#1086;&#1076;&#1080;&#1085; &#1087;&#1086;&#1090;&#1086;&#1082;<a class="anchor-link" href="#&#1054;&#1073;&#1088;&#1072;&#1073;&#1086;&#1090;&#1082;&#1072;-&#1079;&#1072;&#1087;&#1088;&#1086;&#1089;&#1086;&#1074;-&#1074;-&#1086;&#1076;&#1080;&#1085;-&#1087;&#1086;&#1090;&#1086;&#1082;">&#182;</a></h3><ul>
+<li>Подходы для организации выполнения кода в одном потоке</li>
+<li>Модуль select</li>
+<li>Неблокирующий ввод/вывод</li>
+<li>Python фреймворки</li>
+</ul>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="&#1052;&#1086;&#1076;&#1091;&#1083;&#1100;-select">&#1052;&#1086;&#1076;&#1091;&#1083;&#1100; select<a class="anchor-link" href="#&#1052;&#1086;&#1076;&#1091;&#1083;&#1100;-select">&#182;</a></h3><ul>
+<li>Модуль select используется для организации неблокирующего ввода/вывода.</li>
+<li>Существуют несколько механизмов опроса файловых дескрипторов:<ul>
+<li>select.select(...)</li>
+<li>select.poll(...)</li>
+<li>select.epoll(...)</li>
+<li>select.kqueue(...)</li>
+<li>...</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+</div></section></section><section><section>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">re</span>
-<span class="kn">import</span> <span class="nn">requests</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Неблокирующий ввод/вывод, обучающий пример</span>
 
-<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">site_url</span><span class="p">,</span> <span class="n">substring</span><span class="p">):</span>    
-    <span class="n">site_code</span> <span class="o">=</span> <span class="n">get_site_code</span><span class="p">(</span><span class="n">site_url</span><span class="p">)</span>
-    <span class="n">matching_substrings</span> <span class="o">=</span> <span class="n">get_matching_substrings</span><span class="p">(</span><span class="n">site_code</span><span class="p">,</span> <span class="n">substring</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;&quot;</span><span class="si">{}</span><span class="s1">&quot; found </span><span class="si">{}</span><span class="s1"> times in </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-        <span class="n">substring</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">matching_substrings</span><span class="p">),</span> <span class="n">site_url</span>
-    <span class="p">))</span>
+<span class="kn">import</span> <span class="nn">socket</span>
+<span class="kn">import</span> <span class="nn">select</span>
+
+<span class="n">sock</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">()</span>
+<span class="n">sock</span><span class="o">.</span><span class="n">bind</span><span class="p">((</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="mi">10001</span><span class="p">))</span>
+<span class="n">sock</span><span class="o">.</span><span class="n">listen</span><span class="p">()</span>
+
+<span class="c1"># как обработать запросы для conn1 и conn2</span>
+<span class="c1"># одновременно без потоков?</span>
+<span class="n">conn1</span><span class="p">,</span> <span class="n">addr</span> <span class="o">=</span> <span class="n">sock</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
+<span class="n">conn2</span><span class="p">,</span> <span class="n">addr</span> <span class="o">=</span> <span class="n">sock</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
+
+<span class="n">conn1</span><span class="o">.</span><span class="n">setblocking</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">conn2</span><span class="o">.</span><span class="n">setblocking</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
     
-<span class="k">def</span> <span class="nf">get_site_code</span><span class="p">(</span><span class="n">site_url</span><span class="p">):</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">site_url</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;http&#39;</span><span class="p">):</span>
-        <span class="n">site_url</span> <span class="o">=</span> <span class="s1">&#39;http://&#39;</span> <span class="o">+</span> <span class="n">site_url</span>
+<span class="n">epoll</span> <span class="o">=</span> <span class="n">select</span><span class="o">.</span><span class="n">epoll</span><span class="p">()</span>
+<span class="n">epoll</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">conn1</span><span class="o">.</span><span class="n">fileno</span><span class="p">(),</span> <span class="n">select</span><span class="o">.</span><span class="n">EPOLLIN</span> <span class="o">|</span> <span class="n">select</span><span class="o">.</span><span class="n">EPOLLOUT</span><span class="p">)</span>
+<span class="n">epoll</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">conn2</span><span class="o">.</span><span class="n">fileno</span><span class="p">(),</span> <span class="n">select</span><span class="o">.</span><span class="n">EPOLLIN</span> <span class="o">|</span> <span class="n">select</span><span class="o">.</span><span class="n">EPOLLOUT</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">site_url</span><span class="p">)</span><span class="o">.</span><span class="n">text</span>
-
-<span class="k">def</span> <span class="nf">get_matching_substrings</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">substring</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">substring</span><span class="p">,</span> <span class="n">source</span><span class="p">)</span>
-
-
-<span class="n">main</span><span class="p">(</span><span class="s1">&#39;mail.ru&#39;</span><span class="p">,</span> <span class="s1">&#39;script&#39;</span><span class="p">)</span>
+<span class="n">conn_map</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">conn1</span><span class="o">.</span><span class="n">fileno</span><span class="p">():</span> <span class="n">conn1</span><span class="p">,</span>
+    <span class="n">conn2</span><span class="o">.</span><span class="n">fileno</span><span class="p">():</span> <span class="n">conn2</span><span class="p">,</span>
+<span class="p">}</span>
 </pre></div>
 
 </div>
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
+</div></section></section><section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Неблокирующий ввод/вывод, обучающий пример</span>
+<span class="c1"># Цикл обработки событий в epoll</span>
 
+<span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="n">events</span> <span class="o">=</span> <span class="n">epoll</span><span class="o">.</span><span class="n">poll</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    
+    <span class="k">for</span> <span class="n">fileno</span><span class="p">,</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">events</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">event</span> <span class="o">&amp;</span> <span class="n">select</span><span class="o">.</span><span class="n">EPOLLIN</span><span class="p">:</span>
+            <span class="c1"># обработка чтения из сокета</span>
+            <span class="n">data</span><span class="o">=</span><span class="n">conn_map</span><span class="p">[</span><span class="n">fileno</span><span class="p">]</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf8&quot;</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">event</span> <span class="o">&amp;</span> <span class="n">select</span><span class="o">.</span><span class="n">EPOLLOUT</span><span class="p">:</span>
+            <span class="c1"># обработка записи в сокет</span>
+            <span class="n">conn_map</span><span class="p">[</span><span class="n">fileno</span><span class="p">]</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;pong&quot;</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf8&quot;</span><span class="p">))</span>
+</pre></div>
 
-<div class="output_area">
-<div class="prompt"></div>
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>&#34;script&#34; found 272 times in mail.ru
-</pre>
 </div>
 </div>
+</div>
+
+</div><aside class="notes">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">В</span> <span class="n">современных</span> <span class="n">ОС</span> <span class="n">Linux</span> <span class="n">используют</span> <span class="n">epoll</span><span class="o">.</span>
+<span class="n">При</span> <span class="n">помощи</span> <span class="n">вызова</span> <span class="n">epoll</span><span class="o">.</span><span class="n">poll</span> <span class="n">можно</span> <span class="n">получить</span> <span class="n">файловые</span> <span class="n">дескрипторы</span> <span class="n">готовые</span> <span class="n">для</span> <span class="n">чтения</span> <span class="n">или</span> <span class="n">записи</span><span class="o">.</span>
+<span class="n">Такой</span> <span class="n">код</span> <span class="n">иногда</span> <span class="n">называют</span> <span class="n">асинхронным</span> <span class="n">программированием</span><span class="p">,</span> 
+<span class="n">или</span> <span class="n">мультиплексирование</span> <span class="n">ввода</span><span class="o">/</span><span class="n">вывода</span><span class="o">.</span>
+<span class="n">Пример</span> <span class="n">сделан</span> <span class="n">с</span> <span class="n">целью</span> <span class="n">обучения</span> <span class="n">для</span> <span class="n">понимания</span> <span class="n">того</span> <span class="n">как</span> <span class="n">использовать</span> <span class="n">неблокирующий</span> <span class="n">ввод</span><span class="o">/</span><span class="n">вывод</span><span class="o">.</span>
+</pre></div>
 
 </div>
 </div>
+</div>
 
+</div>
+</aside></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="&#1053;&#1077;&#1073;&#1083;&#1086;&#1082;&#1080;&#1088;&#1091;&#1102;&#1097;&#1080;&#1081;-&#1074;&#1074;&#1086;&#1076;/&#1074;&#1099;&#1074;&#1086;&#1076;">&#1053;&#1077;&#1073;&#1083;&#1086;&#1082;&#1080;&#1088;&#1091;&#1102;&#1097;&#1080;&#1081; &#1074;&#1074;&#1086;&#1076;/&#1074;&#1099;&#1074;&#1086;&#1076;<a class="anchor-link" href="#&#1053;&#1077;&#1073;&#1083;&#1086;&#1082;&#1080;&#1088;&#1091;&#1102;&#1097;&#1080;&#1081;-&#1074;&#1074;&#1086;&#1076;/&#1074;&#1099;&#1074;&#1086;&#1076;">&#182;</a></h3><ul>
+<li>Код уже не выглядит слишком простым (хотя в нем нет создания потоков или процессов)<ul>
+<li>Нет обработки закрытия сокетов</li>
+<li>Отсутствует обработка новых входящих соединений</li>
+</ul>
+</li>
+<li>Если код будет решать настоящие задачи, то увеличится кол-во операторов if или callback-ов</li>
+<li>Как изменится код, если в обработке запроса появятся вызовы сторонних библиотеки?</li>
+<li>Не тратим память на создание процессов</li>
+<li>Нет накладных расходов на создание потоков и их синхронизацию</li>
+<li>Нет проблем с GIL</li>
+<li>Как спрятать вызовы select.epoll в функции библиотеки?</li>
+</ul>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="&#1060;&#1088;&#1077;&#1081;&#1084;&#1074;&#1086;&#1088;&#1082;&#1080;-&#1076;&#1083;&#1103;-&#1088;&#1072;&#1073;&#1086;&#1090;&#1099;-&#1074;-&#1086;&#1076;&#1080;&#1085;-&#1087;&#1086;&#1090;&#1086;&#1082;">&#1060;&#1088;&#1077;&#1081;&#1084;&#1074;&#1086;&#1088;&#1082;&#1080; &#1076;&#1083;&#1103; &#1088;&#1072;&#1073;&#1086;&#1090;&#1099; &#1074; &#1086;&#1076;&#1080;&#1085; &#1087;&#1086;&#1090;&#1086;&#1082;<a class="anchor-link" href="#&#1060;&#1088;&#1077;&#1081;&#1084;&#1074;&#1086;&#1088;&#1082;&#1080;-&#1076;&#1083;&#1103;-&#1088;&#1072;&#1073;&#1086;&#1090;&#1099;-&#1074;-&#1086;&#1076;&#1080;&#1085;-&#1087;&#1086;&#1090;&#1086;&#1082;">&#182;</a></h3><ul>
+<li>Twisted, callback api<ul>
+<li><a href="https://twistedmatrix.com">https://twistedmatrix.com</a></li>
+</ul>
+</li>
+<li>Gevent, greenlet, stackless python<ul>
+<li><a href="http://www.gevent.org/">http://www.gevent.org/</a></li>
+</ul>
+</li>
+<li>Tornado, generators api<ul>
+<li><a href="http://www.tornadoweb.org">http://www.tornadoweb.org</a></li>
+</ul>
+</li>
+<li>Asyncio, mainstream<ul>
+<li><a href="https://docs.python.org/3/library/asyncio.html">https://docs.python.org/3/library/asyncio.html</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="&#1048;&#1090;&#1077;&#1088;&#1072;&#1090;&#1086;&#1088;&#1099;-&#1080;-&#1075;&#1077;&#1085;&#1077;&#1088;&#1072;&#1090;&#1086;&#1088;&#1099;,-&#1074;-&#1095;&#1077;&#1084;-&#1088;&#1072;&#1079;&#1085;&#1080;&#1094;&#1072;?">&#1048;&#1090;&#1077;&#1088;&#1072;&#1090;&#1086;&#1088;&#1099; &#1080; &#1075;&#1077;&#1085;&#1077;&#1088;&#1072;&#1090;&#1086;&#1088;&#1099;, &#1074; &#1095;&#1077;&#1084; &#1088;&#1072;&#1079;&#1085;&#1080;&#1094;&#1072;?<a class="anchor-link" href="#&#1048;&#1090;&#1077;&#1088;&#1072;&#1090;&#1086;&#1088;&#1099;-&#1080;-&#1075;&#1077;&#1085;&#1077;&#1088;&#1072;&#1090;&#1086;&#1088;&#1099;,-&#1074;-&#1095;&#1077;&#1084;-&#1088;&#1072;&#1079;&#1085;&#1080;&#1094;&#1072;?">&#182;</a></h3><ul>
+<li>Как устроены итераторы и генераторы</li>
+<li>Сходства и различия</li>
+</ul>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Итераторы</span>
+
+<span class="k">class</span> <span class="nc">MyRangeIterator</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">top</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">top</span> <span class="o">=</span> <span class="n">top</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current</span> <span class="o">=</span> <span class="mi">0</span>
+    
+    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span>
+    
+    <span class="k">def</span> <span class="nf">__next__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">top</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">StopIteration</span>
+        
+        <span class="n">current</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">current</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">counter</span> <span class="o">=</span> <span class="n">MyRangeIterator</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">counter</span>
+<span class="o">&lt;</span><span class="n">__main__</span><span class="o">.</span><span class="n">MyRangeIterator</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0xb671b5cc</span><span class="o">&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="n">counter</span><span class="p">:</span>
+<span class="o">&gt;&gt;&gt;</span>     <span class="nb">print</span><span class="p">(</span><span class="n">it</span><span class="p">)</span>
+<span class="mi">0</span>
+<span class="mi">1</span>
+<span class="mi">2</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div><aside class="notes">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Мы рассмотрим range iterator class. Реализуем его как генератор.
+Метод <strong>iter</strong> возвращает self, созданных объект.</p>
+<p>Затем на каждой итреции будет вызываться метод next() для этого объекта.
+Метод next() должен возвращать следующее значение.</p>
+<p>Или генерировать исключение StopIteration.</p>
+
+</div>
+</div>
+</div>
+</aside></section></section><section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Генераторы</span>
+
+<span class="k">def</span> <span class="nf">my_range_generator</span><span class="p">(</span><span class="n">top</span><span class="p">):</span>
+    <span class="n">current</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="n">current</span> <span class="o">&lt;</span> <span class="n">top</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="n">current</span> 
+        <span class="n">current</span> <span class="o">+=</span> <span class="mi">1</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">counter</span> <span class="o">=</span> <span class="n">my_range_generator</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">counter</span>
+<span class="o">&lt;</span><span class="n">generator</span> <span class="nb">object</span> <span class="n">my_range_generator</span> <span class="n">at</span> <span class="mh">0xb67170ec</span><span class="o">&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="n">counter</span><span class="p">:</span>
+<span class="o">&gt;&gt;&gt;</span>     <span class="nb">print</span><span class="p">(</span><span class="n">it</span><span class="p">)</span>
+<span class="mi">0</span>
+<span class="mi">1</span>
+<span class="mi">2</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="&#1048;&#1090;&#1077;&#1088;&#1072;&#1090;&#1086;&#1088;&#1099;-&#1080;-&#1075;&#1077;&#1085;&#1077;&#1088;&#1072;&#1090;&#1086;&#1088;&#1099;,-&#1087;&#1086;&#1076;&#1074;&#1086;&#1076;&#1080;&#1084;-&#1080;&#1090;&#1086;&#1075;&#1080;">&#1048;&#1090;&#1077;&#1088;&#1072;&#1090;&#1086;&#1088;&#1099; &#1080; &#1075;&#1077;&#1085;&#1077;&#1088;&#1072;&#1090;&#1086;&#1088;&#1099;, &#1087;&#1086;&#1076;&#1074;&#1086;&#1076;&#1080;&#1084; &#1080;&#1090;&#1086;&#1075;&#1080;<a class="anchor-link" href="#&#1048;&#1090;&#1077;&#1088;&#1072;&#1090;&#1086;&#1088;&#1099;-&#1080;-&#1075;&#1077;&#1085;&#1077;&#1088;&#1072;&#1090;&#1086;&#1088;&#1099;,-&#1087;&#1086;&#1076;&#1074;&#1086;&#1076;&#1080;&#1084;-&#1080;&#1090;&#1086;&#1075;&#1080;">&#182;</a></h3><ul>
+<li>Рассмотрели примеры работы итераторов и генераторов</li>
+<li>Они решают одну и туже задачу - генерация последовательностей</li>
+<li>Итератор храненит значения для следующей итерации в self</li>
+<li>Генератор использует локальные переменные</li>
+<li>В генераторы заложены большие возможности для написания concurrency кода</li>
+</ul>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="&#1043;&#1077;&#1085;&#1077;&#1088;&#1072;&#1090;&#1086;&#1088;&#1099;-&#1080;-&#1089;&#1086;&#1087;&#1088;&#1086;&#1075;&#1088;&#1072;&#1084;&#1084;&#1099;">&#1043;&#1077;&#1085;&#1077;&#1088;&#1072;&#1090;&#1086;&#1088;&#1099; &#1080; &#1089;&#1086;&#1087;&#1088;&#1086;&#1075;&#1088;&#1072;&#1084;&#1084;&#1099;<a class="anchor-link" href="#&#1043;&#1077;&#1085;&#1077;&#1088;&#1072;&#1090;&#1086;&#1088;&#1099;-&#1080;-&#1089;&#1086;&#1087;&#1088;&#1086;&#1075;&#1088;&#1072;&#1084;&#1084;&#1099;">&#182;</a></h3><ul>
+<li>Как устроены сопрограммы?</li>
+<li>Отличие между генераторами и сопрограммами</li>
+<li>Как работает yield from?</li>
+<li>Примеры работы сопрограмм</li>
+</ul>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Сопрограммы (корутины)</span>
+
+<span class="k">def</span> <span class="nf">grep</span><span class="p">(</span><span class="n">pattern</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;start grep&quot;</span><span class="p">)</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="k">yield</span>
+        <span class="k">if</span> <span class="n">pattern</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">g</span> <span class="o">=</span> <span class="n">grep</span><span class="p">(</span><span class="s2">&quot;python&quot;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">next</span><span class="p">(</span><span class="n">g</span><span class="p">)</span> <span class="c1"># g.send(None)</span>
+<span class="n">start</span> <span class="n">grep</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">g</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;golang is better?&quot;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">g</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;python is simple!&quot;</span><span class="p">)</span>
+<span class="n">python</span> <span class="ow">is</span> <span class="n">simple</span><span class="err">!</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div></section></section><section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Сопрограммы, вызов метода close()</span>
+
+<span class="k">def</span> <span class="nf">grep</span><span class="p">(</span><span class="n">pattern</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;start grep&quot;</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="k">yield</span>
+            <span class="k">if</span> <span class="n">pattern</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">GeneratorExit</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;stop grep&quot;</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">g</span> <span class="o">=</span> <span class="n">grep</span><span class="p">(</span><span class="s2">&quot;python&quot;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">next</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>  <span class="c1"># g.send(None)</span>
+<span class="n">start</span> <span class="n">grep</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">g</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;python is the best!&quot;</span><span class="p">)</span>
+<span class="n">python</span> <span class="ow">is</span> <span class="n">the</span> <span class="n">best</span><span class="err">!</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">g</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="n">stop</span> <span class="n">grep</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div></section></section><section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Сопрограммы, генерация исключений</span>
+
+<span class="k">def</span> <span class="nf">grep</span><span class="p">(</span><span class="n">pattern</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;start grep&quot;</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="k">yield</span>
+            <span class="k">if</span> <span class="n">pattern</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">GeneratorExit</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;stop grep&quot;</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">g</span> <span class="o">=</span> <span class="n">grep</span><span class="p">(</span><span class="s2">&quot;python&quot;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">next</span><span class="p">(</span><span class="n">g</span><span class="p">)</span> <span class="c1"># g.send(None)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">g</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;python is the best!&quot;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">g</span><span class="o">.</span><span class="n">throw</span><span class="p">(</span><span class="ne">RuntimeError</span><span class="p">,</span> <span class="s2">&quot;something wrong&quot;</span><span class="p">)</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="n">File</span> <span class="s2">&quot;&lt;stdin&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="ne">RuntimeError</span><span class="p">:</span> <span class="n">something</span> <span class="n">wrong</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div></section></section><section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Вызовы сопрограмм, PEP 380</span>
+
+<span class="k">def</span> <span class="nf">grep</span><span class="p">(</span><span class="n">pattern</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;start grep&quot;</span><span class="p">)</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="k">yield</span>
+        <span class="k">if</span> <span class="n">pattern</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">grep_python_coroutine</span><span class="p">():</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="n">grep</span><span class="p">(</span><span class="s2">&quot;python&quot;</span><span class="p">)</span>
+    <span class="nb">next</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+    <span class="n">g</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;python is the best!&quot;</span><span class="p">)</span>
+    <span class="n">g</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">g</span> <span class="o">=</span> <span class="n">grep_python_coroutine</span><span class="p">()</span>  <span class="c1"># is g coroutine?</span>
+<span class="n">start</span> <span class="n">grep</span>
+<span class="n">python</span> <span class="ow">is</span> <span class="n">the</span> <span class="n">best</span><span class="err">!</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">g</span>
+<span class="o">&gt;&gt;&gt;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div></section></section><section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Сопрограммы, yield from PEP 0380</span>
+
+<span class="k">def</span> <span class="nf">grep</span><span class="p">(</span><span class="n">pattern</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;start grep&quot;</span><span class="p">)</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="k">yield</span>
+        <span class="k">if</span> <span class="n">pattern</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">grep_python_coroutine</span><span class="p">():</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="n">grep</span><span class="p">(</span><span class="s2">&quot;python&quot;</span><span class="p">)</span>
+    <span class="k">yield from</span> <span class="n">g</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">g</span> <span class="o">=</span> <span class="n">grep_python_coroutine</span><span class="p">()</span>  <span class="c1"># is g coroutine?</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">g</span>
+<span class="o">&lt;</span><span class="n">generator</span> <span class="nb">object</span> <span class="n">grep_python_coroutine</span> <span class="n">at</span> <span class="mh">0x7f027eec03b8</span><span class="o">&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">g</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+<span class="n">start</span> <span class="n">grep</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">g</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;python wow!&quot;</span><span class="p">)</span>
+<span class="n">python</span> <span class="n">wow</span><span class="err">!</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div></section></section><section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># PEP 380, генераторы</span>
+
+<span class="k">def</span> <span class="nf">chain</span><span class="p">(</span><span class="n">x_iterable</span><span class="p">,</span> <span class="n">y_iterable</span><span class="p">):</span>
+    <span class="k">yield from</span> <span class="n">x_iterable</span>
+    <span class="k">yield from</span> <span class="n">y_iterable</span>
+
+<span class="k">def</span> <span class="nf">the_same_chain</span><span class="p">(</span><span class="n">x_iterable</span><span class="p">,</span> <span class="n">y_iterable</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">x_iterable</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="n">x</span>
+    
+    <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">y_iterable</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="n">y</span>
+    
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">b</span> <span class="o">=</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">chain</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+<span class="o">...</span>     <span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="mi">1</span>
+<span class="mi">2</span>
+<span class="mi">3</span>
+<span class="mi">4</span>
+<span class="mi">5</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="&#1043;&#1077;&#1085;&#1077;&#1088;&#1072;&#1090;&#1086;&#1088;&#1099;-&#1080;-&#1089;&#1086;&#1087;&#1088;&#1086;&#1075;&#1088;&#1072;&#1084;&#1084;&#1099;,-&#1087;&#1086;&#1076;&#1074;&#1086;&#1076;&#1080;&#1084;-&#1080;&#1090;&#1086;&#1075;&#1080;">&#1043;&#1077;&#1085;&#1077;&#1088;&#1072;&#1090;&#1086;&#1088;&#1099; &#1080; &#1089;&#1086;&#1087;&#1088;&#1086;&#1075;&#1088;&#1072;&#1084;&#1084;&#1099;, &#1087;&#1086;&#1076;&#1074;&#1086;&#1076;&#1080;&#1084; &#1080;&#1090;&#1086;&#1075;&#1080;<a class="anchor-link" href="#&#1043;&#1077;&#1085;&#1077;&#1088;&#1072;&#1090;&#1086;&#1088;&#1099;-&#1080;-&#1089;&#1086;&#1087;&#1088;&#1086;&#1075;&#1088;&#1072;&#1084;&#1084;&#1099;,-&#1087;&#1086;&#1076;&#1074;&#1086;&#1076;&#1080;&#1084;-&#1080;&#1090;&#1086;&#1075;&#1080;">&#182;</a></h3><ul>
+<li>Как устроены генераторы и сопрограммы</li>
+<li>Несмотря на некоторую схожесть, у генератора и корутины два важных отличия:<ul>
+<li>Генераторы "производят" значения (yield item)</li>
+<li>Корутины "потребляют" значения (item = yield)</li>
+</ul>
+</li>
+<li>Корутина может иметь два состояния: suspended и resumed</li>
+<li>yield приостанавливает корутину</li>
+<li>send() возобновляет работу корутины</li>
+<li>close() завершает выполнение</li>
+<li>yield from используется для делегирования вызова генератора</li>
+<li>Первые шаги с asyncio</li>
+</ul>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="&#1055;&#1077;&#1088;&#1074;&#1099;&#1077;-&#1096;&#1072;&#1075;&#1080;-&#1089;-asyncio">&#1055;&#1077;&#1088;&#1074;&#1099;&#1077; &#1096;&#1072;&#1075;&#1080; &#1089; asyncio<a class="anchor-link" href="#&#1055;&#1077;&#1088;&#1074;&#1099;&#1077;-&#1096;&#1072;&#1075;&#1080;-&#1089;-asyncio">&#182;</a></h3><ul>
+<li>Введение в asyncio</li>
+<li>Примеры выполнения asyncio кода</li>
+</ul>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="&#1055;&#1077;&#1088;&#1074;&#1099;&#1077;-&#1096;&#1072;&#1075;&#1080;-&#1089;-asyncio">&#1055;&#1077;&#1088;&#1074;&#1099;&#1077; &#1096;&#1072;&#1075;&#1080; &#1089; asyncio<a class="anchor-link" href="#&#1055;&#1077;&#1088;&#1074;&#1099;&#1077;-&#1096;&#1072;&#1075;&#1080;-&#1089;-asyncio">&#182;</a></h3><p>Фреймворк asyncio это:</p>
+<ul>
+<li>часть Python3</li>
+<li>неблокирующий ввод/вывод</li>
+<li>сервисы с тысячами соединений одновременно</li>
+<li>в основе лежат генераторы и корутины</li>
+<li>линейный код, отсутствие callbacks!</li>
+</ul>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># asyncio, Hello World</span>
+
+<span class="kn">import</span> <span class="nn">asyncio</span>
+
+<span class="nd">@asyncio</span><span class="o">.</span><span class="n">coroutine</span>
+<span class="k">def</span> <span class="nf">hello_world</span><span class="p">():</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Hello World!&quot;</span><span class="p">)</span>
+        <span class="k">yield from</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">hello_world</span><span class="p">())</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">loop</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="n">Hello</span> <span class="n">World</span><span class="err">!</span>
+<span class="n">Hello</span> <span class="n">World</span><span class="err">!</span>
+<span class="o">...</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div></section></section><section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># asyncio, async def / await; PEP 492 Python3.5</span>
+
+<span class="kn">import</span> <span class="nn">asyncio</span>
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">hello_world</span><span class="p">():</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Hello World!&quot;</span><span class="p">)</span>
+        <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">hello_world</span><span class="p">())</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">loop</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="n">Hello</span> <span class="n">World</span><span class="err">!</span>
+<span class="n">Hello</span> <span class="n">World</span><span class="err">!</span>
+<span class="o">...</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div></section></section><section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># asyncio, tcp сервер</span>
+
+<span class="kn">import</span> <span class="nn">asyncio</span>
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">handle_echo</span><span class="p">(</span><span class="n">reader</span><span class="p">,</span> <span class="n">writer</span><span class="p">):</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="k">await</span> <span class="n">reader</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+    <span class="n">message</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+    <span class="n">addr</span> <span class="o">=</span> <span class="n">writer</span><span class="o">.</span><span class="n">get_extra_info</span><span class="p">(</span><span class="s2">&quot;peername&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;received </span><span class="si">%r</span><span class="s2"> from </span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">addr</span><span class="p">))</span>
+    <span class="n">writer</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    
+<span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
+<span class="n">coro</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">start_server</span><span class="p">(</span><span class="n">handle_echo</span><span class="p">,</span> <span class="s2">&quot;127.0.0.1&quot;</span><span class="p">,</span> <span class="mi">10001</span><span class="p">,</span> <span class="n">loop</span><span class="o">=</span><span class="n">loop</span><span class="p">)</span>
+<span class="n">server</span> <span class="o">=</span> <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">coro</span><span class="p">)</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">loop</span><span class="o">.</span><span class="n">run_forever</span><span class="p">()</span>
+<span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+    <span class="k">pass</span>
+
+<span class="n">server</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">server</span><span class="o">.</span><span class="n">wait_closed</span><span class="p">())</span>
+<span class="n">loop</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div></section></section><section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># asyncio, tcp клиент</span>
+
+<span class="kn">import</span> <span class="nn">asyncio</span>
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">tcp_echo_client</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">loop</span><span class="p">):</span>
+    <span class="n">reader</span><span class="p">,</span> <span class="n">writer</span> <span class="o">=</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">open_connection</span><span class="p">(</span><span class="s2">&quot;127.0.0.1&quot;</span><span class="p">,</span> <span class="mi">10001</span><span class="p">,</span> <span class="n">loop</span><span class="o">=</span><span class="n">loop</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;send: </span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">message</span><span class="p">)</span>
+    <span class="n">writer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span>
+    <span class="n">writer</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
+<span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;hello World!&quot;</span>
+<span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">tcp_echo_client</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">loop</span><span class="p">))</span>
+<span class="n">loop</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="&#1042;&#1099;&#1087;&#1086;&#1083;&#1085;&#1077;&#1085;&#1080;&#1077;-&#1082;&#1086;&#1076;&#1072;-&#1074;-asyncio">&#1042;&#1099;&#1087;&#1086;&#1083;&#1085;&#1077;&#1085;&#1080;&#1077; &#1082;&#1086;&#1076;&#1072; &#1074; asyncio<a class="anchor-link" href="#&#1042;&#1099;&#1087;&#1086;&#1083;&#1085;&#1077;&#1085;&#1080;&#1077;-&#1082;&#1086;&#1076;&#1072;-&#1074;-asyncio">&#182;</a></h3><ul>
+<li>asyncio.Future</li>
+<li>asyncio.Task</li>
+<li>loop.run_in_executor</li>
+<li>библиотеки для работы с asyncio</li>
+</ul>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">### asyncio.Future, аналог concurrent.futures.Future</span>
+
+<span class="kn">import</span> <span class="nn">asyncio</span>
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">slow_operation</span><span class="p">(</span><span class="n">future</span><span class="p">):</span>
+    <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">future</span><span class="o">.</span><span class="n">set_result</span><span class="p">(</span><span class="s2">&quot;Future is done!&quot;</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">future</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Future</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">ensure_future</span><span class="p">(</span><span class="n">slow_operation</span><span class="p">(</span><span class="n">future</span><span class="p">))</span>
+<span class="o">&gt;&gt;&gt;</span> 
+<span class="o">&gt;&gt;&gt;</span> <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">future</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">future</span><span class="o">.</span><span class="n">result</span><span class="p">())</span>
+<span class="n">Future</span> <span class="ow">is</span> <span class="n">done</span><span class="err">!</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">loop</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div></section></section><section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">### asyncio.Task, запуск нескольких корутин</span>
+
+<span class="kn">import</span> <span class="nn">asyncio</span>
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">sleep_task</span><span class="p">(</span><span class="n">num</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;process task: </span><span class="si">{num}</span><span class="s2"> iter: </span><span class="si">{i}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">num</span>
+
+<span class="c1"># ensure_future or create_task</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">task_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">loop</span><span class="o">.</span><span class="n">create_task</span><span class="p">(</span><span class="n">sleep_task</span><span class="p">(</span><span class="n">i</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">)]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">asyncio</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span><span class="n">task_list</span><span class="p">))</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">loop</span><span class="o">.</span><span class="n">create_task</span><span class="p">(</span><span class="n">sleep_task</span><span class="p">(</span><span class="mi">3</span><span class="p">)))</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">asyncio</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span>
+<span class="o">&gt;&gt;&gt;</span>     <span class="n">sleep_task</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span>
+<span class="o">&gt;&gt;&gt;</span>     <span class="n">sleep_task</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">))</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div></section></section><section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># loop.run_in_executor, запуск в отдельном потоке</span>
+
+<span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="kn">from</span> <span class="nn">urllib.request</span> <span class="k">import</span> <span class="n">urlopen</span>
+
+<span class="c1"># a synchronous function</span>
+<span class="k">def</span> <span class="nf">sync_get_url</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+   <span class="k">return</span> <span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">load_url</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">loop</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">future</span> <span class="o">=</span> <span class="n">loop</span><span class="o">.</span><span class="n">run_in_executor</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">sync_get_url</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">future</span>
+    <span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">response</span><span class="p">))</span>
+
+<span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
+<span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">load_url</span><span class="p">(</span><span class="s2">&quot;https://google.com&quot;</span><span class="p">,</span> <span class="n">loop</span><span class="o">=</span><span class="n">loop</span><span class="p">))</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="&#1041;&#1080;&#1073;&#1083;&#1080;&#1086;&#1090;&#1077;&#1082;&#1080;-asyncio">&#1041;&#1080;&#1073;&#1083;&#1080;&#1086;&#1090;&#1077;&#1082;&#1080; asyncio<a class="anchor-link" href="#&#1041;&#1080;&#1073;&#1083;&#1080;&#1086;&#1090;&#1077;&#1082;&#1080;-asyncio">&#182;</a></h3><ul>
+<li><a href="https://github.com/aio-libs">https://github.com/aio-libs</a></li>
+<li>aiohttp<ul>
+<li><a href="https://github.com/aio-libs/aiohttp">https://github.com/aio-libs/aiohttp</a></li>
+</ul>
+</li>
+<li>aiomysql<ul>
+<li><a href="https://github.com/aio-libs/aiomysql">https://github.com/aio-libs/aiomysql</a></li>
+</ul>
+</li>
+<li>aiomcache<ul>
+<li><a href="https://github.com/aio-libs/aiomcache">https://github.com/aio-libs/aiomcache</a></li>
+</ul>
+</li>
+<li><a href="https://docs.python.org/3/library/asyncio.html">https://docs.python.org/3/library/asyncio.html</a></li>
+</ul>
+
+</div>
+</div>
 </div></section></section>
 </div>
 </div>
