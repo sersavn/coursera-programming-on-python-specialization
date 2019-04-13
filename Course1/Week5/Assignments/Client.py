@@ -11,9 +11,11 @@ class Client:
 
     def put(self, metric_name, metric_value, timestamp = str(int(time.time()))):
         sended_str = 'put {} {} {}\n'.format(metric_name , metric_value, timestamp)
+        print(sended_str)
         with socket.create_connection((self.host, self.port), self.timeout) as sock:
             sock.sendall(sended_str.encode("utf8"))
             recv_data = sock.recv(1024)
+            #print(recv_data)
             if not recv_data:
                 raise ClientError()
             if recv_data.decode("utf-8") == "error\nwrong command\n\n":
@@ -26,6 +28,7 @@ class Client:
         with socket.create_connection((self.host, self.port)) as sock:
             sock.sendall(sended_str.encode("utf8"))
             recv_data = sock.recv(4096).decode("utf-8")
+            print(recv_data)
             if not recv_data:
                 raise ClientError()
 
@@ -50,3 +53,12 @@ class Client:
 
 class ClientError(Exception):
     pass
+
+client = Client('127.0.0.1', 8181)
+
+#client.put('A', 500)
+#client.put('B', 500)
+
+#client.get('A')
+
+#client.put('a')
