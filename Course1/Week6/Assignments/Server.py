@@ -73,3 +73,5 @@ class ClientServerProtocol(asyncio.Protocol):
             get()
         else:
             self.transport.write('error\n\n'.encode())
+
+run_server('127.0.0.1', 8181)
