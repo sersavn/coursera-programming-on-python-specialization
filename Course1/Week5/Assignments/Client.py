@@ -4,13 +4,13 @@ import time
 
 class Client:
 
-    def __init__(self, host, port, timeout = 10):
+    def __init__(self, host, port, timeout=10):
         self.host = host
         self.port = port
         self.timeout = timeout
 
-    def put(self, metric_name, metric_value, timestamp = str(int(time.time()))):
-        sended_str = 'put {} {} {}\n'.format(metric_name , metric_value, timestamp)
+    def put(self, metric_name, metric_value, timestamp=str(int(time.time()))):
+        sended_str = 'put {} {} {}\n'.format(metric_name, metric_value, timestamp)
         print(sended_str)
         with socket.create_connection((self.host, self.port), self.timeout) as sock:
             sock.sendall(sended_str.encode("utf8"))

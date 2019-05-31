@@ -1,5 +1,4 @@
 import asyncio
-import sys
 import re
 
 def run_server(host, port):
@@ -10,7 +9,7 @@ def run_server(host, port):
     loop = asyncio.get_event_loop()
     coro = loop.create_server(ClientServerProtocol, host, port)
     server = loop.run_until_complete(coro)
-    asyncio.async(wakeup())
+    #asyncio.async(wakeup()) # only if launched with windows
     try:
         loop.run_forever()
     except KeyboardInterrupt:
@@ -35,14 +34,14 @@ class ClientServerProtocol(asyncio.Protocol):
                 key = data_splitted[1]
                 reply_str = []
                 if key == '*':
-                    for k,v in storage.items():
+                    for k, v in storage.items():
                         for val in v:
-                            z = '{} {} {}'.format(k, str(val[0]),str(val[1]))
-                            reply_str.append(z)
+                            val_formatted = '{} {} {}'.format(k, str(val[0]), str(val[1]))
+                            reply_str.append(val_formatted)
                 else:
                     for val in storage[key]:
-                        z = '{} {} {}'.format(key, str(val[0]), str(val[1]))
-                        reply_str.append(z)
+                        val_formatted = '{} {} {}'.format(key, str(val[0]), str(val[1]))
+                        reply_str.append(val_formatted)
                 reply_str = '\n'.join(reply_str)
                 self.transport.write(reply_str + '\n\n'.encode())
             except KeyError:
